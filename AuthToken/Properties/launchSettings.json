@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AuthToken": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Environment": "DEV"
+      }
+    }
+  }
+}

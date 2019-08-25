@@ -10,9 +10,11 @@ namespace CrudifyTicker
     {
         static KC.Ticker Ticker;
         static KC.Kite Kite;
-        static string Client_API_Key = "";
-        static string Public_Token = "";
+
         static string Access_Token = "";
+        static string Public_Token = "";
+        static string API_Key = "";
+        
         static UInt32 Instrument_ID = 256265;
 
         static void Main(string[] args)
@@ -33,43 +35,46 @@ namespace CrudifyTicker
 
         static void InitSession()
         {
-            string API_Key = getTokenDetails("api_key");
-            string API_Secret = getTokenDetails("api_secret");
-            string User_ID = getTokenDetails("user_id");
-            string Request_Token = getTokenDetails("request_token");
+            API_Key = getTokenDetails("api_key");
+            Public_Token = getTokenDetails("public_token");
+            Access_Token = getTokenDetails("access_token");
 
-            if(API_Key.Trim().Length != 0 || API_Secret.Trim().Length != 0 || Request_Token.Trim().Length != 0) 
+            if (API_Key.Trim().Length != 0 || Public_Token.Trim().Length != 0 || Access_Token.Trim().Length != 0) 
             {
-                Kite = new KC.Kite(API_Key, Debug:true);
-                KC.User user = Kite.GenerateSession(Request_Token, API_Secret);
-
-                Public_Token = user.PublicToken;
-                Access_Token = user.AccessToken;
+                //Kite = new KC.Kite(API_Key, Debug: true);
+                //Kite.SetAccessToken(Access_Token);                
                 Console.WriteLine("Session successfully initiated.");
             }
             else {
-                Console.WriteLine("Authentication details missing.");
+                Console.WriteLine("Unable to start the session.");
             }
         }
         
         static void InitTicker()
         {
-            Ticker = new KC.Ticker(Client_API_Key, Access_Token);
+            try
+            {
+                Ticker = new KC.Ticker(API_Key, Access_Token);
 
-            Ticker.OnTick += OnTick;
-            Ticker.OnReconnect += OnReconnect;
-            Ticker.OnNoReconnect += OnNoReconnect;
-            Ticker.OnError += OnError;
-            Ticker.OnClose += OnClose;
-            Ticker.OnConnect += OnConnect;
-            Ticker.OnOrderUpdate += OnOrderUpdate;
+                Ticker.OnTick += OnTick;
+                Ticker.OnReconnect += OnReconnect;
+                Ticker.OnNoReconnect += OnNoReconnect;
+                Ticker.OnError += OnError;
+                Ticker.OnClose += OnClose;
+                Ticker.OnConnect += OnConnect;
+                Ticker.OnOrderUpdate += OnOrderUpdate;
 
-            Ticker.EnableReconnect(Interval: 5, Retries: 50);
-            Ticker.Connect();
+                Ticker.EnableReconnect(Interval: 5, Retries: 50);
+                Ticker.Connect();
 
-            // Subscribing to NIFTY50 and setting mode to LTP
-            Ticker.Subscribe(Tokens: new UInt32[] { Instrument_ID });
-            Ticker.SetMode(Tokens: new UInt32[] { Instrument_ID }, Mode: KC.Constants.MODE_LTP);
+                // Subscribing to NIFTY50 and setting mode to LTP
+                Ticker.Subscribe(Tokens: new UInt32[] { Instrument_ID });
+                Ticker.SetMode(Tokens: new UInt32[] { Instrument_ID }, Mode: KC.Constants.MODE_LTP);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         static void GetDayRange()
