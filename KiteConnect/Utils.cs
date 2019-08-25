@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+using fastJSON;
 using CsvHelper;
 using System.IO;
 using System.Web;
@@ -29,7 +29,7 @@ namespace KiteConnect
                 {
                     return DateTime.ParseExact(DateString, "yyyy-MM-dd HH:mm:ss", null);
                 }
-            }catch (Exception e)
+            }catch (Exception)
             {
                 return null;
             }
@@ -42,7 +42,7 @@ namespace KiteConnect
         /// <returns>JSON string/</returns>
         public static string JsonSerialize(object obj)
         {
-            string json = JsonConvert.SerializeObject(obj);
+            string json = JSON.ToJSON(obj);
             MatchCollection mc = Regex.Matches(json, @"\\/Date\((\d*?)\)\\/");
             foreach (Match m in mc)
             {
@@ -59,9 +59,9 @@ namespace KiteConnect
         /// <returns>Json in the form of nested string dictionary.</returns>
         public static Dictionary<string, dynamic> JsonDeserialize(string Json)
         {
-            Dictionary<string, dynamic> dict = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Json);
+            Dictionary<string, dynamic> dict = JSON.ToObject<Dictionary<string, dynamic>>(Json);
             return dict;
-        }
+        }        
 
         /// <summary>
         /// Parse instruments API's CSV response.

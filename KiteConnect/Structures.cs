@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KiteConnect
 {
@@ -88,17 +89,17 @@ namespace KiteConnect
                 Exchange = data["exchange"];
                 Price = data["price"];
                 LastPrice = data["last_price"];
-                CollateralQuantity = data["collateral_quantity"];
+                CollateralQuantity = (int) data["collateral_quantity"];
                 PNL = data["pnl"];
                 ClosePrice = data["close_price"];
                 AveragePrice = data["average_price"];
                 TradingSymbol = data["tradingsymbol"];
                 CollateralType = data["collateral_type"];
-                T1Quantity = data["t1_quantity"];
+                T1Quantity = (int) data["t1_quantity"];
                 InstrumentToken = Convert.ToUInt32(data["instrument_token"]);
                 ISIN = data["isin"];
-                RealisedQuantity = data["realised_quantity"];
-                Quantity = data["quantity"];
+                RealisedQuantity =  (int)data["realised_quantity"];
+                Quantity = (int) data["quantity"];
             }
             catch (Exception)
             {
@@ -274,7 +275,7 @@ namespace KiteConnect
             try
             {
                 Product = data["product"];
-                OvernightQuantity = data["overnight_quantity"];
+                OvernightQuantity = (int) data["overnight_quantity"];
                 Exchange = data["exchange"];
                 SellValue = data["sell_value"];
                 BuyM2M = data["buy_m2m"];
@@ -283,10 +284,10 @@ namespace KiteConnect
                 Realised = data["realised"];
                 PNL = data["pnl"];
                 Multiplier = data["multiplier"];
-                SellQuantity = data["sell_quantity"];
+                SellQuantity = (int) data["sell_quantity"];
                 SellM2M = data["sell_m2m"];
                 BuyValue = data["buy_value"];
-                BuyQuantity = data["buy_quantity"];
+                BuyQuantity = (int) data["buy_quantity"];
                 AveragePrice = data["average_price"];
                 Unrealised = data["unrealised"];
                 Value = data["value"];
@@ -295,11 +296,11 @@ namespace KiteConnect
                 M2M = data["m2m"];
                 InstrumentToken = Convert.ToUInt32(data["instrument_token"]);
                 ClosePrice = data["close_price"];
-                Quantity = data["quantity"];
-                DayBuyQuantity = data["day_buy_quantity"];
+                Quantity = (int) data["quantity"];
+                DayBuyQuantity = (int) data["day_buy_quantity"];
                 DayBuyValue = data["day_buy_value"];
                 DayBuyPrice = data["day_buy_price"];
-                DaySellQuantity = data["day_sell_quantity"];
+                DaySellQuantity = (int) data["day_sell_quantity"];
                 DaySellValue = data["day_sell_value"];
                 DaySellPrice = data["day_sell_price"];
             }
@@ -371,22 +372,22 @@ namespace KiteConnect
             try
             {
                 AveragePrice = data["average_price"];
-                CancelledQuantity = data["cancelled_quantity"];
-                DisclosedQuantity = data["disclosed_quantity"];
+                CancelledQuantity = (int) data["cancelled_quantity"];
+                DisclosedQuantity = (int) data["disclosed_quantity"];
                 Exchange = data["exchange"];
                 ExchangeOrderId = data["exchange_order_id"];
                 ExchangeTimestamp =  Utils.StringToDate(data["exchange_timestamp"]);
-                FilledQuantity = data["filled_quantity"];
+                FilledQuantity = (int) data["filled_quantity"];
                 InstrumentToken = Convert.ToUInt32(data["instrument_token"]);
                 OrderId = data["order_id"];
                 OrderTimestamp =  Utils.StringToDate(data["order_timestamp"]);
                 OrderType = data["order_type"];
                 ParentOrderId = data["parent_order_id"];
-                PendingQuantity = data["pending_quantity"];
+                PendingQuantity = (int) data["pending_quantity"];
                 PlacedBy = data["placed_by"];
                 Price = data["price"];
                 Product = data["product"];
-                Quantity = data["quantity"];
+                Quantity = (int) data["quantity"];
                 Status = data["status"];
                 StatusMessage = data["status_message"];
                 Tag = data["tag"];
@@ -496,7 +497,7 @@ namespace KiteConnect
                 TransactionType = data["transaction_type"];
                 Product = data["product"];
                 AveragePrice = data["average_price"];
-                Quantity = data["quantity"];
+                Quantity = (int) data["quantity"];
                 FillTimestamp =  Utils.StringToDate(data["fill_timestamp"]);
                 ExchangeTimestamp =  Utils.StringToDate(data["exchange_timestamp"]);
             }
@@ -557,7 +558,7 @@ namespace KiteConnect
             try
             {
                 APIKey = data["data"]["api_key"];
-                Products = (string[])data["data"]["products"].ToArray(typeof(string));
+                Products = ((List<object>)data["data"]["products"]).Select(x => (string)x).ToArray();
                 UserName = data["data"]["user_name"];
                 UserShortName = data["data"]["user_shortname"];
                 AvatarURL = data["data"]["avatar_url"];
@@ -568,8 +569,8 @@ namespace KiteConnect
                 UserType = data["data"]["user_type"];
                 UserId = data["data"]["user_id"];
                 LoginTime = Utils.StringToDate(data["data"]["login_time"]);
-                Exchanges = (string[])data["data"]["exchanges"].ToArray(typeof(string));
-                OrderTypes = (string[])data["data"]["order_types"].ToArray(typeof(string));
+                Exchanges = ((List<object>)data["data"]["exchanges"]).Select(x => (string)x).ToArray();
+                OrderTypes = ((List<object>)data["data"]["order_types"]).Select(x => (string)x).ToArray();
                 Email = data["data"]["email"];
             }
             catch (Exception)
@@ -625,14 +626,14 @@ namespace KiteConnect
         {
             try
             {
-                Products = (string[])data["data"]["products"].ToArray(typeof(string));
+                Products = ((List<object>) data["data"]["products"]).Select(x => (string)x).ToArray();
                 UserName = data["data"]["user_name"];
                 UserShortName = data["data"]["user_shortname"];
                 AvatarURL = data["data"]["avatar_url"];
                 Broker = data["data"]["broker"];
                 UserType = data["data"]["user_type"];
-                Exchanges = (string[])data["data"]["exchanges"].ToArray(typeof(string));
-                OrderTypes = (string[])data["data"]["order_types"].ToArray(typeof(string));
+                Exchanges = ((List<object>)data["data"]["exchanges"]).Select(x => (string)x).ToArray();
+                OrderTypes = ((List<object>)data["data"]["order_types"]).Select(x => (string)x).ToArray();
                 Email = data["data"]["email"];
             }
             catch (Exception)
@@ -965,18 +966,18 @@ namespace KiteConnect
             try
             {
                 DividendType = data["dividend_type"];
-                PendingInstalments = data["pending_instalments"];
+                PendingInstalments = (int) data["pending_instalments"];
                 Created = Utils.StringToDate(data["created"]);
                 LastInstalment = Utils.StringToDate(data["last_instalment"]);
                 TransactionType = data["transaction_type"];
                 Frequency = data["frequency"];
-                InstalmentDate = data["instalment_date"];
+                InstalmentDate = (int) data["instalment_date"];
                 Fund = data["fund"];
                 SIPId = data["sip_id"];
                 Tradingsymbol = data["tradingsymbol"];
                 Tag = data["tag"];
-                InstalmentAmount = data["instalment_amount"];
-                Instalments = data["instalments"];
+                InstalmentAmount = (int) data["instalment_amount"];
+                Instalments = (int) data["instalments"];
                 Status = data["status"];
                 OrderId = data.ContainsKey(("order_id")) ? data["order_id"] : "";
             }
